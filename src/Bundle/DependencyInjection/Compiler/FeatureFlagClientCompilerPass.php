@@ -7,6 +7,7 @@ namespace Tbessenreither\FeatureFlagServiceClient\Bundle\DependencyInjection\Com
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tbessenreither\FeatureFlagServiceClient\Interface\FeatureFlagClientInterface;
 use Tbessenreither\FeatureFlagServiceClient\Service\FeatureFlagClient;
 use Tbessenreither\FeatureFlagServiceClient\Service\FeatureFlagHttpClient;
@@ -42,6 +43,19 @@ class FeatureFlagClientCompilerPass implements CompilerPassInterface
 			$definition->setArgument('$ffsApiUrl', '%env(FFS_API_URL)%');
 			$definition->setArgument('$ffsScope', '%env(FFS_SCOPE)%');
 			$definition->setArgument('$ffsApiKey', '%env(FFS_API_KEY)%');
+
+			// Define a custom HTTP client with profiling
+			$httpClientDefinition = new Definition(
+				HttpClientInterface::class,
+				[
+					[
+						'profile' => true,
+						'profile_name' => 'feature_flag_client',
+					],
+				]
+			);
+			$httpClientDefinition->setFactory([HttpClientInterface::class, 'create']);
+
 			// The rest will use autowiring defaults or can be set similarly if needed
 			$container->setDefinition(FeatureFlagHttpClient::class, $definition);
 		}
