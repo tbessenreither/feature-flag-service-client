@@ -30,8 +30,6 @@ class FeatureFlagServiceExtension extends Extension
             $config['cache_ttl'],
         ]);
         $definition->setPublic(false);
-        $definition->setAutowired(true);
-        $definition->setAutoconfigured(true);
 
         $container->setDefinition(FeatureFlagClient::class, $definition);
 
