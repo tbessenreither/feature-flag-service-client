@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tbessenreither\FeatureFlagService\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Tbessenreither\FeatureFlagService\Client\FeatureFlagClient;
+use Tbessenreither\FeatureFlagService\Client\FeatureFlagClientInterface;
 
 /**
  * Extension for the FeatureFlagService bundle
@@ -20,18 +21,22 @@ class FeatureFlagServiceExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        // Register configuration parameters
-        $container->setParameter('feature_flag_service.api_url', $config['api_url']);
-        $container->setParameter('feature_flag_service.api_key', $config['api_key']);
-        $container->setParameter('feature_flag_service.timeout', $config['timeout']);
-        $container->setParameter('feature_flag_service.cache_enabled', $config['cache_enabled']);
-        $container->setParameter('feature_flag_service.cache_ttl', $config['cache_ttl']);
+        // Register the FeatureFlagClient service
+        $definition = new Definition(FeatureFlagClient::class);
+        $definition->setArguments([
+            '$apiUrl' => $config['api_url'],
+            '$apiKey' => $config['api_key'],
+            '$timeout' => $config['timeout'],
+            '$cacheEnabled' => $config['cache_enabled'],
+            '$cacheTtl' => $config['cache_ttl'],
+        ]);
+        $definition->setPublic(false);
+        $definition->setAutowired(true);
+        $definition->setAutoconfigured(true);
 
-        // Load services configuration
-        $loader = new YamlFileLoader(
-            $container,
-            new FileLocator(__DIR__ . '/../../config')
-        );
-        $loader->load('services.yaml');
+        $container->setDefinition(FeatureFlagClient::class, $definition);
+
+        // Create an alias for the interface
+        $container->setAlias(FeatureFlagClientInterface::class, FeatureFlagClient::class);
     }
 }
