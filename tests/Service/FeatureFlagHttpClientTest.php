@@ -23,6 +23,7 @@ class FeatureFlagHttpClientTest extends TestCase
 			['scope' => 'default', 'key' => 'flag1', 'value' => 'true', 'enabled' => true],
 			['scope' => 'default', 'key' => 'flag2', 'value' => 'false', 'enabled' => false],
 		]));
+		$response->method('getStatusCode')->willReturn(200);
 		$httpClient->method('request')->willReturn($response);
 		$client = new FeatureFlagHttpClient('http://api', 'default', 'api-key', $httpClient);
 		$result = $client->fetchAll();
@@ -42,6 +43,7 @@ class FeatureFlagHttpClientTest extends TestCase
 			'value' => 'true',
 			'enabled' => true,
 		]));
+		$response->method('getStatusCode')->willReturn(200);
 		$httpClient->method('request')->willReturn($response);
 		$client = new FeatureFlagHttpClient('http://api', 'default', 'api-key', $httpClient);
 		$result = $client->fetchOne('flag1');
