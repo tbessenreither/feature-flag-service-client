@@ -34,6 +34,7 @@ class FeatureFlagServiceExtension extends Extension
         $container->setDefinition(FeatureFlagClient::class, $definition);
 
         // Create an alias for the interface
-        $container->setAlias(FeatureFlagClientInterface::class, FeatureFlagClient::class);
+        $container->setAlias(FeatureFlagClientInterface::class, FeatureFlagClient::class)
+            ->setPublic(true);
     }
 }
