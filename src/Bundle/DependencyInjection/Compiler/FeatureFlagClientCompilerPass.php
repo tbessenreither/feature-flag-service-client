@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\Bundle\FeatureFlagClientBundle\DependencyInjection\Compiler;
+namespace Tbessenreither\FeatureFlagClient\Bundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

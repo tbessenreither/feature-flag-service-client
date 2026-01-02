@@ -42,7 +42,7 @@ Add the bundle to your `config/bundles.php` file:
 
 return [
     // ...
-    Tbessenreither\FeatureFlagService\FeatureFlagServiceBundle::class => ['all' => true],
+    Tbessenreither\FeatureFlagClientBundle\Bundle\FeatureFlagServiceBundle::class => ['all' => true],
 ];
 ```
 
