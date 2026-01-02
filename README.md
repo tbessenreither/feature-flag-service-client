@@ -72,17 +72,41 @@ class MyService
 
 ## Development
 
-### Install dependencies
+### Using DDEV (Recommended)
 
-```bash
-composer install
-```
+This project includes a DDEV configuration for local development with PHP 8.4.
 
-### Run tests
+1. Start the environment:
+   ```bash
+   ddev start
+   ```
 
-```bash
-vendor/bin/phpunit
-```
+2. Run tests:
+   ```bash
+   ddev test
+   ```
+
+3. Run composer commands:
+   ```bash
+   ddev composer install
+   ddev composer update
+   ```
+
+See [.ddev/README.md](.ddev/README.md) for more details.
+
+### Manual Setup
+
+If you prefer not to use DDEV:
+
+1. Install dependencies:
+   ```bash
+   composer install
+   ```
+
+2. Run tests:
+   ```bash
+   vendor/bin/phpunit
+   ```
 
 ## License
 

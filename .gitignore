@@ -7,6 +7,19 @@ composer.lock
 .phpunit.cache/
 /phpunit.xml
 
+# DDEV
+/.ddev/.gitignore
+/.ddev/*-build/
+/.ddev/.*.yaml
+/.ddev/db_snapshots/
+/.ddev/import-db/
+/.ddev/import.yaml
+/.ddev/.dbimageBuild
+/.ddev/.dbimageExtra
+/.ddev/.webimageBuild
+/.ddev/.webimageExtra
+/.ddev/.homeadditions
+
 # IDE
 /.idea/
 /.vscode/
