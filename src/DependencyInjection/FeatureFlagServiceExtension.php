@@ -7,7 +7,6 @@ namespace Tbessenreither\FeatureFlagService\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Reference;
 use Tbessenreither\FeatureFlagService\Client\FeatureFlagClient;
 use Tbessenreither\FeatureFlagService\Client\FeatureFlagClientInterface;
 
