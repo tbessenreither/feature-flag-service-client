@@ -2,17 +2,35 @@
 
 A Symfony bundle providing a client for feature flag service.
 
+## Version
+
+Package: tbessenreither/feature-flag-service
+Current version: unreleased
+
 ## Requirements
 
 - PHP 8.4 or higher
-- Symfony 7.3 or higher
+- Symfony 7.4 or higher
 
 ## Installation
 
-Install the bundle using Composer:
+To install this bundle using Composer, add the repository to your composer.json:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tbessenreither/feature-flag-service-client"
+        }
+    ]
+}
+```
+
+Then require the bundle:
 
 ```bash
-composer require tbessenreither/feature-flag-service
+composer require tbessenreither/feature-flag-service-client
 ```
 
 ## Configuration
@@ -28,16 +46,6 @@ return [
 ];
 ```
 
-Configure the bundle in `config/packages/feature_flag_service.yaml`:
-
-```yaml
-feature_flag_service:
-    api_url: 'http://localhost:8000'  # URL of your feature flag service
-    api_key: null                      # Optional API key for authentication
-    timeout: 5                         # Request timeout in seconds
-    cache_enabled: true                # Enable caching of feature flags
-    cache_ttl: 300                     # Cache TTL in seconds
-```
 
 ## Usage
 
@@ -59,13 +67,10 @@ class MyService
 
     public function doSomething(): void
     {
-        if ($this->featureFlagClient->isEnabled('my-feature')) {
+        // Feature flags are formatted as dot-separated paths: Service.Module.Feature
+        if ($this->featureFlagClient->lookup('User.Auth.Login')) {
             // Feature is enabled
         }
-        
-        $value = $this->featureFlagClient->getValue('my-feature');
-        
-        $allFlags = $this->featureFlagClient->getAllFlags();
     }
 }
 ```
@@ -77,36 +82,25 @@ class MyService
 This project includes a DDEV configuration for local development with PHP 8.4.
 
 1. Start the environment:
-   ```bash
-   ddev start
-   ```
+    ```bash
+    ddev start
+    ```
 
-2. Run tests:
-   ```bash
-   ddev test
-   ```
-
-3. Run composer commands:
-   ```bash
-   ddev composer install
-   ddev composer update
-   ```
+2. Run composer install:
+    ```bash
+    ddev composer install
+    ```
 
 See [.ddev/README.md](.ddev/README.md) for more details.
 
-### Manual Setup
+## Testing
 
-If you prefer not to use DDEV:
+To run tests (optional, not required for startup):
+```bash
+ddev test         # Runs all PHPUnit tests
+ddev test --filter TestName   # Runs specific test
+```
 
-1. Install dependencies:
-   ```bash
-   composer install
-   ```
-
-2. Run tests:
-   ```bash
-   vendor/bin/phpunit
-   ```
 
 ## License
 
