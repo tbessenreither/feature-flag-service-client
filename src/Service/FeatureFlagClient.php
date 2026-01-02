@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tbessenreither\FeatureFlagServiceClient\Service;
 
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Tbessenreither\FeatureFlagServiceClient\Exception\FeatureFlagException;
 use Tbessenreither\FeatureFlagServiceClient\Interface\FeatureFlagClientInterface;
@@ -14,7 +15,7 @@ use Throwable;
 
 class FeatureFlagClient implements FeatureFlagClientInterface
 {
-	private string $cachePrefix = 'feature_flag_service:flag:';
+	private string $cachePrefix = 'feature_flag_service-flag-';
 
 	public function __construct(
 		private FeatureFlagHttpClient $featureFlagHttpClient,
@@ -24,8 +25,12 @@ class FeatureFlagClient implements FeatureFlagClientInterface
 	) {
 	}
 
-	public function lookup(string $keyPath, ?bool $fallback = null): bool
+	public function isEnabled(string $keyPath, ?bool $fallback = null): bool
 	{
+		if (mb_strpos($keyPath, '-') !== false) {
+			throw new InvalidArgumentException('KeyPath can\'t contain -');
+		}
+
 		try {
 			return $this->getCachedFlag($keyPath);
 		} catch (Throwable $e) {

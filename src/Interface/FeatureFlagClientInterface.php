@@ -17,6 +17,6 @@ interface FeatureFlagClientInterface
 	 * @param ?bool $fallback
 	 * @return bool
 	 */
-	public function lookup(string $keyPath, ?bool $fallback = null): bool;
+	public function isEnabled(string $keyPath, ?bool $fallback = null): bool;
 
 }
