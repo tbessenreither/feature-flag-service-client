@@ -24,11 +24,11 @@ class FeatureFlagServiceExtension extends Extension
         // Register the FeatureFlagClient service
         $definition = new Definition(FeatureFlagClient::class);
         $definition->setArguments([
-            '$apiUrl' => $config['api_url'],
-            '$apiKey' => $config['api_key'],
-            '$timeout' => $config['timeout'],
-            '$cacheEnabled' => $config['cache_enabled'],
-            '$cacheTtl' => $config['cache_ttl'],
+            $config['api_url'],
+            $config['api_key'],
+            $config['timeout'],
+            $config['cache_enabled'],
+            $config['cache_ttl'],
         ]);
         $definition->setPublic(false);
         $definition->setAutowired(true);
