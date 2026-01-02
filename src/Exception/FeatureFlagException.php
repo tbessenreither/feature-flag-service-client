@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Exception;
+namespace Tbessenreither\FeatureFlagServiceClient\Exception;
 
 use RuntimeException;
 

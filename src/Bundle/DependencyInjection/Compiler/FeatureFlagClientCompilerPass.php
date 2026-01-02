@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagClient\Bundle\DependencyInjection\Compiler;
+namespace Tbessenreither\FeatureFlagServiceClient\Bundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Tbessenreither\FeatureFlagService\Interface\FeatureFlagClientInterface;
-use Tbessenreither\FeatureFlagService\Service\FeatureFlagClient;
-use Tbessenreither\FeatureFlagService\Service\FeatureFlagHttpClient;
+use Tbessenreither\FeatureFlagServiceClient\Interface\FeatureFlagClientInterface;
+use Tbessenreither\FeatureFlagServiceClient\Service\FeatureFlagClient;
+use Tbessenreither\FeatureFlagServiceClient\Service\FeatureFlagHttpClient;
 
 
 class FeatureFlagClientCompilerPass implements CompilerPassInterface

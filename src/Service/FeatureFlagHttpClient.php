@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Service;
+namespace Tbessenreither\FeatureFlagServiceClient\Service;
 
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Tbessenreither\FeatureFlagService\Dto\FeatureFlagDto;
+use Tbessenreither\FeatureFlagServiceClient\Dto\FeatureFlagDto;
 
 
 class FeatureFlagHttpClient

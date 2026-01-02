@@ -56,7 +56,7 @@ Inject the `FeatureFlagClientInterface` into your services:
 
 namespace App\Service;
 
-use Tbessenreither\FeatureFlagService\Client\FeatureFlagClientInterface;
+use Tbessenreither\FeatureFlagServiceClient\Interface\FeatureFlagClientInterface;
 
 class MyService
 {

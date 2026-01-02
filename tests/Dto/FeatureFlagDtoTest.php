@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Tests\Dto;
+namespace Tbessenreither\FeatureFlagServiceClient\Tests\Dto;
 
 use PHPUnit\Framework\TestCase;
-use Tbessenreither\FeatureFlagService\Dto\FeatureFlagDto;
+use Tbessenreither\FeatureFlagServiceClient\Dto\FeatureFlagDto;
 
 
 class FeatureFlagDtoTest extends TestCase

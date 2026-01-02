@@ -1,5 +1,5 @@
 {
-    "name": "tbessenreither/feature-flag-service",
+    "name": "tbessenreither/feature-flag-service-client",
     "description": "A Symfony bundle providing a client for feature flag service",
     "type": "symfony-bundle",
     "license": "MIT",
@@ -22,12 +22,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Tbessenreither\\FeatureFlagService\\": "src/"
+            "Tbessenreither\\FeatureFlagServiceClient\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tbessenreither\\FeatureFlagService\\Tests\\": "tests/"
+            "Tbessenreither\\FeatureFlagServiceClient\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",

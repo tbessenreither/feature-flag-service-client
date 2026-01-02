@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Tests\Exception;
+namespace Tbessenreither\FeatureFlagServiceClient\Tests\Exception;
 
 use PHPUnit\Framework\TestCase;
-use Tbessenreither\FeatureFlagService\Exception\FeatureFlagException;
+use Tbessenreither\FeatureFlagServiceClient\Exception\FeatureFlagException;
 
 
 class FeatureFlagExceptionTest extends TestCase

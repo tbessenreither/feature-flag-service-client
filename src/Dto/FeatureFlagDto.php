@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Dto;
+namespace Tbessenreither\FeatureFlagServiceClient\Dto;
 
 
 class FeatureFlagDto

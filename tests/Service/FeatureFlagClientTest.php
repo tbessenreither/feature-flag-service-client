@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Tests\Service;
+namespace Tbessenreither\FeatureFlagServiceClient\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
-use Tbessenreither\FeatureFlagService\Service\FeatureFlagClient;
-use Tbessenreither\FeatureFlagService\Service\FeatureFlagHttpClient;
-use Tbessenreither\FeatureFlagService\Dto\FeatureFlagDto;
-use Tbessenreither\FeatureFlagService\Exception\FeatureFlagException;
+use Tbessenreither\FeatureFlagServiceClient\Service\FeatureFlagClient;
+use Tbessenreither\FeatureFlagServiceClient\Service\FeatureFlagHttpClient;
+use Tbessenreither\FeatureFlagServiceClient\Dto\FeatureFlagDto;
+use Tbessenreither\FeatureFlagServiceClient\Exception\FeatureFlagException;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Psr\Log\LoggerInterface;

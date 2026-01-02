@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Tests\Interface;
+namespace Tbessenreither\FeatureFlagServiceClient\Tests\Interface;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Tbessenreither\FeatureFlagService\Interface\FeatureFlagClientInterface;
+use Tbessenreither\FeatureFlagServiceClient\Interface\FeatureFlagClientInterface;
 
 
 class FeatureFlagClientInterfaceTest extends TestCase

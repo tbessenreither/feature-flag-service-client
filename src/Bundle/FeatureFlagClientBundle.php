@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagClientBundle\Bundle;
+namespace Tbessenreither\FeatureFlagServiceClient\Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Tbessenreither\FeatureFlagClient\Bundle\DependencyInjection\Compiler\FeatureFlagClientCompilerPass;
+use Tbessenreither\FeatureFlagServiceClient\Bundle\DependencyInjection\Compiler\FeatureFlagClientCompilerPass;
 
 
 class FeatureFlagClientBundle extends Bundle

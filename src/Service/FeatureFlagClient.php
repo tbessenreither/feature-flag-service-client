@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tbessenreither\FeatureFlagService\Service;
+namespace Tbessenreither\FeatureFlagServiceClient\Service;
 
 use Psr\Log\LoggerInterface;
-use Tbessenreither\FeatureFlagService\Exception\FeatureFlagException;
-use Tbessenreither\FeatureFlagService\Interface\FeatureFlagClientInterface;
+use Tbessenreither\FeatureFlagServiceClient\Exception\FeatureFlagException;
+use Tbessenreither\FeatureFlagServiceClient\Interface\FeatureFlagClientInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Throwable;
