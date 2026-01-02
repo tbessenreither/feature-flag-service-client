@@ -1,0 +1,1543 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Feature Flag Service API",
+		"description": "",
+		"version": "0.1.0"
+	},
+	"servers": [
+		{
+			"url": "\/",
+			"description": ""
+		}
+	],
+	"paths": {
+		"\/api\/scope\/{scope}\/api_key": {
+			"post": {
+				"operationId": "create_api_key",
+				"tags": [
+					"ApiKey"
+				],
+				"responses": {
+					"201": {
+						"description": "API key created"
+					},
+					"400": {
+						"description": "Invalid input"
+					},
+					"401": {
+						"description": "Authentication required"
+					}
+				},
+				"summary": "Create API key for a scope",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					}
+				],
+				"requestBody": {
+					"description": "Create API key",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"expiresAt": {
+										"type": "string",
+										"format": "date-time"
+									}
+								},
+								"required": [
+									"name"
+								]
+							}
+						}
+					},
+					"required": true
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/scope\/{scope}\/api_key\/{id}": {
+			"delete": {
+				"operationId": "delete_api_key",
+				"tags": [
+					"ApiKey"
+				],
+				"responses": {
+					"204": {
+						"description": "API key deleted"
+					},
+					"401": {
+						"description": "Authentication required"
+					},
+					"404": {
+						"description": "Not found"
+					}
+				},
+				"summary": "Delete an API key",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					},
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Resource identifier",
+						"example": "1"
+					}
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/scope\/{scope}\/api_keys": {
+			"get": {
+				"operationId": "list_api_keys_for_scope",
+				"tags": [
+					"ApiKey"
+				],
+				"responses": {
+					"200": {
+						"description": "List of API keys for scope"
+					}
+				},
+				"summary": "List API keys for a scope",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					}
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/login": {
+			"post": {
+				"operationId": "postApiLogin",
+				"tags": [
+					"Auth"
+				],
+				"responses": {
+					"200": {
+						"description": "JWT token",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"token": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"summary": "Get JWT token",
+				"requestBody": {
+					"description": "Credentials",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"email",
+									"password"
+								]
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"\/api\/user\/change_password": {
+			"post": {
+				"operationId": "post_change_password",
+				"tags": [
+					"Auth"
+				],
+				"responses": {
+					"204": {
+						"description": "Password changed successfully"
+					},
+					"400": {
+						"description": "Invalid input"
+					},
+					"401": {
+						"description": "Authentication required"
+					}
+				},
+				"summary": "Change current user password",
+				"requestBody": {
+					"description": "Change password",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"currentPassword": {
+										"type": "string"
+									},
+									"newPassword": {
+										"type": "string"
+									},
+									"confirmPassword": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"currentPassword",
+									"newPassword"
+								]
+							}
+						}
+					},
+					"required": true
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/scope\/{scope}\/feature_flag": {
+			"post": {
+				"operationId": "create_feature_flag",
+				"tags": [
+					"FeatureFlag"
+				],
+				"responses": {
+					"201": {
+						"description": "FeatureFlag resource created",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/FeatureFlag-feature_flag.read"
+								}
+							}
+						},
+						"links": {}
+					},
+					"400": {
+						"description": "Invalid input",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"422": {
+						"description": "An error occurred",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							}
+						},
+						"links": {}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Creates a FeatureFlag resource.",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					}
+				],
+				"requestBody": {
+					"description": "Create feature flag",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"keyPath": {
+										"type": "string",
+										"example": "server.module.feature"
+									},
+									"value": {
+										"type": "string",
+										"enum": [
+											"true",
+											"false",
+											"inherit"
+										]
+									},
+									"description": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"keyPath",
+									"value"
+								]
+							}
+						}
+					},
+					"required": true
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/scope\/{scope}\/feature_flag\/{keyPath}": {
+			"get": {
+				"operationId": "get_feature_flag_by_key",
+				"tags": [
+					"FeatureFlag"
+				],
+				"responses": {
+					"200": {
+						"description": "FeatureFlag resource",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/FeatureFlag-feature_flag.read"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Retrieves a FeatureFlag resource.",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					},
+					{
+						"name": "keyPath",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Feature flag key path",
+						"example": "server.module.feature"
+					}
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			},
+			"put": {
+				"operationId": "update_feature_flag",
+				"tags": [
+					"FeatureFlag"
+				],
+				"responses": {
+					"200": {
+						"description": "FeatureFlag resource updated",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/FeatureFlag-feature_flag.read"
+								}
+							}
+						},
+						"links": {}
+					},
+					"400": {
+						"description": "Invalid input",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"422": {
+						"description": "An error occurred",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							}
+						},
+						"links": {}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Replaces the FeatureFlag resource.",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					},
+					{
+						"name": "keyPath",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Feature flag key path",
+						"example": "server.module.feature"
+					}
+				],
+				"requestBody": {
+					"description": "Update feature flag",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"value": {
+										"type": "string",
+										"enum": [
+											"true",
+											"false",
+											"inherit"
+										]
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					},
+					"required": true
+				},
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			},
+			"delete": {
+				"operationId": "delete_feature_flag",
+				"tags": [
+					"FeatureFlag"
+				],
+				"responses": {
+					"204": {
+						"description": "FeatureFlag resource deleted"
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Removes the FeatureFlag resource.",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					},
+					{
+						"name": "keyPath",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Feature flag key path",
+						"example": "server.module.feature"
+					}
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/scope\/{scope}\/feature_flags": {
+			"get": {
+				"operationId": "api_scope_scopefeature_flags_get_collection",
+				"tags": [
+					"FeatureFlag"
+				],
+				"responses": {
+					"200": {
+						"description": "FeatureFlag collection",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#\/components\/schemas\/FeatureFlag-feature_flag.read"
+									}
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Retrieves the collection of FeatureFlag resources.",
+				"parameters": [
+					{
+						"name": "scope",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"description": "Scope name",
+						"example": "default"
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The collection page number",
+						"required": false,
+						"deprecated": false,
+						"schema": {
+							"type": "integer",
+							"default": 1
+						},
+						"style": "form",
+						"explode": false
+					}
+				],
+				"security": [
+					{
+						"bearerAuth": []
+					},
+					{
+						"ApiKeyAuth": []
+					}
+				]
+			}
+		},
+		"\/api\/scopes": {
+			"get": {
+				"operationId": "api_scopes_get_collection",
+				"tags": [
+					"Scope"
+				],
+				"responses": {
+					"200": {
+						"description": "Scope collection",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#\/components\/schemas\/Scope-scope.read"
+									}
+								}
+							}
+						}
+					}
+				},
+				"summary": "Retrieves the collection of Scope resources.",
+				"description": "Retrieves the collection of Scope resources.",
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "The collection page number",
+						"required": false,
+						"deprecated": false,
+						"schema": {
+							"type": "integer",
+							"default": 1
+						},
+						"style": "form",
+						"explode": false
+					}
+				]
+			},
+			"post": {
+				"operationId": "api_scopes_post",
+				"tags": [
+					"Scope"
+				],
+				"responses": {
+					"201": {
+						"description": "Scope resource created",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Scope-scope.read"
+								}
+							}
+						},
+						"links": {}
+					},
+					"400": {
+						"description": "Invalid input",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"422": {
+						"description": "An error occurred",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							}
+						},
+						"links": {}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Creates a Scope resource.",
+				"description": "Creates a Scope resource.",
+				"parameters": [],
+				"requestBody": {
+					"description": "The new Scope resource",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"$ref": "#\/components\/schemas\/Scope-scope.write"
+							}
+						}
+					},
+					"required": true
+				}
+			}
+		},
+		"\/api\/scopes\/{name}": {
+			"get": {
+				"operationId": "api_scopes_name_get",
+				"tags": [
+					"Scope"
+				],
+				"responses": {
+					"200": {
+						"description": "Scope resource",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Scope-scope.read"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Retrieves a Scope resource.",
+				"description": "Retrieves a Scope resource.",
+				"parameters": [
+					{
+						"name": "name",
+						"in": "path",
+						"description": "Scope identifier",
+						"required": true,
+						"deprecated": false,
+						"schema": {
+							"type": "string"
+						},
+						"style": "simple",
+						"explode": false
+					}
+				]
+			},
+			"put": {
+				"operationId": "api_scopes_name_put",
+				"tags": [
+					"Scope"
+				],
+				"responses": {
+					"200": {
+						"description": "Scope resource updated",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Scope-scope.read"
+								}
+							}
+						},
+						"links": {}
+					},
+					"400": {
+						"description": "Invalid input",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"422": {
+						"description": "An error occurred",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/ConstraintViolation"
+								}
+							}
+						},
+						"links": {}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Replaces the Scope resource.",
+				"description": "Replaces the Scope resource.",
+				"parameters": [
+					{
+						"name": "name",
+						"in": "path",
+						"description": "Scope identifier",
+						"required": true,
+						"deprecated": false,
+						"schema": {
+							"type": "string"
+						},
+						"style": "simple",
+						"explode": false
+					}
+				],
+				"requestBody": {
+					"description": "The updated Scope resource",
+					"content": {
+						"application\/json": {
+							"schema": {
+								"$ref": "#\/components\/schemas\/Scope-scope.write"
+							}
+						}
+					},
+					"required": true
+				}
+			},
+			"delete": {
+				"operationId": "api_scopes_name_delete",
+				"tags": [
+					"Scope"
+				],
+				"responses": {
+					"204": {
+						"description": "Scope resource deleted"
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/ld+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error.jsonld"
+								}
+							},
+							"application\/problem+json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							},
+							"application\/json": {
+								"schema": {
+									"$ref": "#\/components\/schemas\/Error"
+								}
+							}
+						},
+						"links": {}
+					}
+				},
+				"summary": "Removes the Scope resource.",
+				"description": "Removes the Scope resource.",
+				"parameters": [
+					{
+						"name": "name",
+						"in": "path",
+						"description": "Scope identifier",
+						"required": true,
+						"deprecated": false,
+						"schema": {
+							"type": "string"
+						},
+						"style": "simple",
+						"explode": false
+					}
+				]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"ConstraintViolation": {
+				"type": "object",
+				"description": "Unprocessable entity",
+				"properties": {
+					"status": {
+						"default": 422,
+						"type": "integer"
+					},
+					"violations": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"propertyPath": {
+									"type": "string",
+									"description": "The property path of the violation"
+								},
+								"message": {
+									"type": "string",
+									"description": "The message associated with the violation"
+								}
+							}
+						}
+					},
+					"detail": {
+						"readOnly": true,
+						"type": "string"
+					},
+					"type": {
+						"readOnly": true,
+						"type": "string"
+					},
+					"title": {
+						"readOnly": true,
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"instance": {
+						"readOnly": true,
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				}
+			},
+			"ConstraintViolation.jsonld": {
+				"type": "object",
+				"description": "Unprocessable entity",
+				"properties": {
+					"status": {
+						"default": 422,
+						"type": "integer"
+					},
+					"violations": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"propertyPath": {
+									"type": "string",
+									"description": "The property path of the violation"
+								},
+								"message": {
+									"type": "string",
+									"description": "The message associated with the violation"
+								}
+							}
+						}
+					},
+					"detail": {
+						"readOnly": true,
+						"type": "string"
+					},
+					"description": {
+						"readOnly": true,
+						"type": "string"
+					},
+					"type": {
+						"readOnly": true,
+						"type": "string"
+					},
+					"title": {
+						"readOnly": true,
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"instance": {
+						"readOnly": true,
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				}
+			},
+			"Error": {
+				"type": "object",
+				"description": "A representation of common errors.",
+				"properties": {
+					"title": {
+						"readOnly": true,
+						"description": "A short, human-readable summary of the problem.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"detail": {
+						"readOnly": true,
+						"description": "A human-readable explanation specific to this occurrence of the problem.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"status": {
+						"type": [
+							"number",
+							"null"
+						],
+						"examples": [
+							404
+						],
+						"default": 400
+					},
+					"instance": {
+						"readOnly": true,
+						"description": "A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"type": {
+						"readOnly": true,
+						"description": "A URI reference that identifies the problem type",
+						"type": "string"
+					}
+				}
+			},
+			"Error.jsonld": {
+				"type": "object",
+				"description": "A representation of common errors.",
+				"properties": {
+					"title": {
+						"readOnly": true,
+						"description": "A short, human-readable summary of the problem.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"detail": {
+						"readOnly": true,
+						"description": "A human-readable explanation specific to this occurrence of the problem.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"status": {
+						"type": [
+							"number",
+							"null"
+						],
+						"examples": [
+							404
+						],
+						"default": 400
+					},
+					"instance": {
+						"readOnly": true,
+						"description": "A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"type": {
+						"readOnly": true,
+						"description": "A URI reference that identifies the problem type",
+						"type": "string"
+					},
+					"description": {
+						"readOnly": true,
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				}
+			},
+			"FeatureFlag-feature_flag.read": {
+				"type": "object",
+				"required": [
+					"keyPath",
+					"value",
+					"scope"
+				],
+				"properties": {
+					"keyPath": {
+						"pattern": "^([a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)*)$",
+						"type": "string",
+						"example": "server.module.feature"
+					},
+					"value": {
+						"default": "inherit",
+						"type": "string",
+						"enum": [
+							"true",
+							"false",
+							"inherit"
+						]
+					},
+					"description": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"scope": {
+						"$ref": "#\/components\/schemas\/Scope-feature_flag.read"
+					}
+				}
+			},
+			"FeatureFlag-feature_flag.write": {
+				"type": "object",
+				"required": [
+					"keyPath",
+					"value",
+					"scope"
+				],
+				"properties": {
+					"keyPath": {
+						"pattern": "^([a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)*)$",
+						"type": "string",
+						"example": "server.module.feature"
+					},
+					"value": {
+						"default": "inherit",
+						"type": "string",
+						"enum": [
+							"true",
+							"false",
+							"inherit"
+						]
+					},
+					"description": {
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"scope": {
+						"type": "string",
+						"format": "iri-reference",
+						"example": "https:\/\/example.com\/"
+					}
+				}
+			},
+			"Scope-feature_flag.read": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"Scope-scope.read": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				}
+			},
+			"Scope-scope.write": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				}
+			}
+		},
+		"responses": {},
+		"parameters": {},
+		"examples": {},
+		"requestBodies": {},
+		"headers": {},
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			},
+			"ApiKeyAuth": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "X-API-Key"
+			}
+		}
+	},
+	"security": [
+		{
+			"bearerAuth": []
+		}
+	],
+	"tags": [
+		{
+			"name": "FeatureFlag",
+			"description": "Resource \u0027FeatureFlag\u0027 operations."
+		},
+		{
+			"name": "Scope",
+			"description": "Resource \u0027Scope\u0027 operations."
+		}
+	],
+	"webhooks": {}
+}
