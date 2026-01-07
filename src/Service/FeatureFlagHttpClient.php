@@ -18,8 +18,8 @@ class FeatureFlagHttpClient
 		private readonly string $ffsScope,
 		private readonly string $ffsApiKey,
 		private readonly HttpClientInterface $httpClient,
-		private readonly int $timeout = 5,
 		private readonly LoggerInterface $logger,
+		private readonly int $timeout = 5,
 	) {
 	}
 
