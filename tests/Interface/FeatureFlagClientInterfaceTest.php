@@ -15,7 +15,7 @@ class FeatureFlagClientInterfaceTest extends TestCase
 	public function testInterfaceHasLookupMethod(): void
 	{
 		$reflection = new ReflectionClass(FeatureFlagClientInterface::class);
-		$this->assertTrue($reflection->hasMethod('lookup'));
+		$this->assertTrue($reflection->hasMethod('isEnabled'));
 	}
 
 }

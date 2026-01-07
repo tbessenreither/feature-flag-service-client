@@ -11,6 +11,7 @@ class FeatureFlagDto
 		private string $key,
 		private string $value,
 		private bool $enabled,
+		private ?ClientInformationDto $clientInformation,
 	) {
 	}
 
@@ -32,6 +33,11 @@ class FeatureFlagDto
 	public function isEnabled(): bool
 	{
 		return $this->enabled;
+	}
+
+	public function getClientInformation(): ?ClientInformationDto
+	{
+		return $this->clientInformation;
 	}
 
 }

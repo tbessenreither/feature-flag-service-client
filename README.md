@@ -1,16 +1,21 @@
-# Feature Flag Service Bundle
 
-A Symfony bundle providing a client for feature flag service.
+# Feature Flag Service Client Bundle
+
+A Symfony bundle providing a client for feature flag service, with HTTP API integration and caching.
+
 
 ## Version
 
-Package: tbessenreither/feature-flag-service
+Package: tbessenreither/feature-flag-service-client
 Current version: unreleased
+
 
 ## Requirements
 
 - PHP 8.4 or higher
-- Symfony 7.4 or higher
+- Symfony 7.4 or higher (core)
+- Symfony 8.0 or higher (http-client, cache)
+
 
 ## Installation
 
@@ -27,11 +32,13 @@ To install this bundle using Composer, add the repository to your composer.json:
 }
 ```
 
+
 Then require the bundle:
 
 ```bash
 composer require tbessenreither/feature-flag-service-client
 ```
+
 
 ## Configuration
 
@@ -42,9 +49,18 @@ Add the bundle to your `config/bundles.php` file:
 
 return [
     // ...
-    Tbessenreither\FeatureFlagClientBundle\Bundle\FeatureFlagServiceBundle::class => ['all' => true],
+    Tbessenreither\FeatureFlagServiceClient\Bundle\FeatureFlagClientBundle::class => ['all' => true],
 ];
 ```
+
+### Environment Variables
+
+Set the following environment variables in your `.env` or server config:
+
+- `FFS_API_URL`   (API base URL)
+- `FFS_SCOPE`     (API scope)
+- `FFS_API_KEY`   (API key)
+
 
 
 ## Usage
@@ -62,18 +78,22 @@ class MyService
 {
     public function __construct(
         private readonly FeatureFlagClientInterface $featureFlagClient
-    ) {
-    }
+    ) {}
 
     public function doSomething(): void
     {
         // Feature flags are formatted as dot-separated paths: Service.Module.Feature
-        if ($this->featureFlagClient->lookup('User.Auth.Login')) {
+        if ($this->featureFlagClient->isEnabled('User.Auth.Login')) {
             // Feature is enabled
         }
     }
 }
 ```
+
+
+## API Reference
+
+See [documentation/openapi_spec.json](documentation/openapi_spec.json) for the OpenAPI specification of the Feature Flag Service API.
 
 ## Development
 
@@ -93,13 +113,21 @@ This project includes a DDEV configuration for local development with PHP 8.4.
 
 See [.ddev/README.md](.ddev/README.md) for more details.
 
+
 ## Testing
 
-To run tests (optional, not required for startup):
+Tests are written with PHPUnit 11 and located in the `tests/` directory.
+
+To run tests:
+```bash
+ddev exec vendor/bin/phpunit
+```
+Or use DDEV tasks:
 ```bash
 ddev test         # Runs all PHPUnit tests
 ddev test --filter TestName   # Runs specific test
 ```
+
 
 
 ## License

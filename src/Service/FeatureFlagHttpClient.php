@@ -5,7 +5,9 @@ namespace Tbessenreither\FeatureFlagServiceClient\Service;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Tbessenreither\FeatureFlagServiceClient\Dto\ClientInformationDto;
 use Tbessenreither\FeatureFlagServiceClient\Dto\FeatureFlagDto;
+use Tbessenreither\FeatureFlagServiceClient\Enum\ClientInformationType;
 
 
 class FeatureFlagHttpClient
@@ -17,6 +19,7 @@ class FeatureFlagHttpClient
 		private readonly string $ffsApiKey,
 		private readonly HttpClientInterface $httpClient,
 		private readonly int $timeout = 5,
+		private readonly LoggerInterface $logger,
 	) {
 	}
 
@@ -42,6 +45,7 @@ class FeatureFlagHttpClient
 					key: $flagData['key'] ?? '',
 					value: $flagData['value'] ?? '',
 					enabled: $flagData['enabled'] ?? false,
+					clientInformation: null,
 				);
 			}
 		}
@@ -60,12 +64,37 @@ class FeatureFlagHttpClient
 			throw new Exception("Invalid response format. Expected a feature flag array for '$keyPath'.");
 		}
 
-		return new FeatureFlagDto(
+		$featureFlagDto = new FeatureFlagDto(
 			scope: $flagData['scope'] ?? '',
 			key: $flagData['key'] ?? '',
 			value: $flagData['value'] ?? '',
 			enabled: $flagData['enabled'] ?? false,
+			clientInformation: isset($flagData['clientInformation']) && $flagData['clientInformation'] !== null ? new ClientInformationDto(
+				type: ClientInformationType::from($flagData['clientInformation']['type'] ?? 'information'),
+				message: $flagData['clientInformation']['message'] ?? '',
+			) : null,
 		);
+
+		if ($featureFlagDto->getClientInformation() !== null) {
+			if ($featureFlagDto->getClientInformation()->getType() === ClientInformationType::Error) {
+				$this->logger->error('Feature flag "' . $keyPath . '" has client information: ' . $featureFlagDto->getClientInformation()->getMessage(), [
+					'keyPath' => $keyPath,
+					'information' => $featureFlagDto->getClientInformation(),
+				]);
+			} elseif ($featureFlagDto->getClientInformation()->getType() === ClientInformationType::Warning) {
+				$this->logger->warning('Feature flag "' . $keyPath . '" has client information: ' . $featureFlagDto->getClientInformation()->getMessage(), [
+					'keyPath' => $keyPath,
+					'information' => $featureFlagDto->getClientInformation(),
+				]);
+			} else {
+				$this->logger->info('Feature flag "' . $keyPath . '" has client information: ' . $featureFlagDto->getClientInformation()->getMessage(), [
+					'keyPath' => $keyPath,
+					'information' => $featureFlagDto->getClientInformation(),
+				]);
+			}
+		}
+
+		return $featureFlagDto;
 	}
 
 	private function createUrl(?string $keyPath = null): string
