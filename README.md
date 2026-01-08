@@ -13,8 +13,7 @@ Current version: unreleased
 ## Requirements
 
 - PHP 8.4 or higher
-- Symfony 7.4 or higher (core)
-- Symfony 8.0 or higher (http-client, cache)
+- Symfony 7.3 or higher
 
 
 ## Installation
